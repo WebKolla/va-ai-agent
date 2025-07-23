@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pydantic_ai import Agent
 
 from app.datastore import search_hotels_with_score
-from app.prompt import HOTEL_AGENT_PROMPT
+from app.prompts import HOTEL_AGENT_PROMPT
 from app.schemas import HotelRecommendation
 
 load_dotenv()
