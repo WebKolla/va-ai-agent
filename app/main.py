@@ -1,55 +1,64 @@
+"""
+Multi-Agent Travel Assistant API.
+
+FastAPI application that coordinates specialised AI agents for hotels, flights,
+and experiences to provide comprehensive travel recommendations using Virgin Atlantic
+data.
+"""
+
 from fastapi import FastAPI, HTTPException
-from app.schemas import TravelQuery, TravelAdvice
-from app.prompt import generate_prompt
-from openai import OpenAI
-import os
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+from app.agents.experience_agent import experience_agent
+from app.agents.flight_agent import flight_agent
+from app.agents.hotel_agent import hotel_agent
+from app.agents.manager_agent import manager_agent
+from app.schemas import TravelAdvice, TravelQuery
+from app.utils import check_api_key, validate_user_query
 
-app = FastAPI()
+app = FastAPI(
+    title="Multi-Agent Travel Assistant",
+    description="A travel assistant that uses multiple agents to plan your trip",
+)
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+agent_deps = {
+    "hotel_agent": hotel_agent,
+    "flights_agent": flight_agent,
+    "experience_agent": experience_agent,
+}
+
 
 @app.post("/travel-assistant", response_model=TravelAdvice)
-def travel_assistant(query: TravelQuery):
+async def travel_assistant(query: TravelQuery):
+    """Travel assistant endpoint."""
     try:
-        print(f"🔍 Received query: {query.query}")
-        api_key = os.getenv("OPENAI_API_KEY")
-        print(f"🔑 Using API key: {api_key[:10]}..." if api_key else "❌ No API key")
-        prompt = generate_prompt(query.query)
-        
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "system", "content": "You are a helpful travel assistant."},
-                      {"role": "user", "content": prompt}],
-            max_tokens=150
-        )
-        content = completion.choices[0].message.content
-        print(f"📝 OpenAI Response: {content}")
-        
-        # For now, return structured mock data (TODO: parse AI response properly)
-        return TravelAdvice(
-            destination="Tokyo",
-            reason="Great culture, food, and safe for travelers.",
-            budget="Moderate to High", 
-            tips=[
-                "Visit Senso-ji Temple early morning.",
-                "Try local street food in Shibuya.", 
-                "Use JR Pass for transportation."
-            ]
-        )
-        
+        # Check if API key is set
+        has_api_key = check_api_key()
+        if not has_api_key:
+            raise HTTPException(status_code=500, detail="OpenAI API key is not set")
+
+        # Validate user query
+        validation_result = await validate_user_query(query.query)
+
+        if not validation_result["is_safe"]:
+            raise HTTPException(status_code=400, detail=validation_result["message"])
+
+        # Run the manager agent
+        result = await manager_agent.run(query.query, deps=agent_deps)
+
+        # Return the result
+        return result.output
     except Exception as e:
         print(f"Error: {e}")
-        raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"API error: {str(e)}") from e
+
 
 @app.get("/")
 def read_root():
+    """API is running"""
     return {"message": "Travel Assistant API is running"}
+
 
 @app.get("/health")
 def health_check():
+    """Health check endpoint."""
     return {"status": "healthy"}

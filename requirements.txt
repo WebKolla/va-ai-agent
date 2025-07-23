@@ -3,3 +3,7 @@ uvicorn
 openai
 pydantic
 python-dotenv
+pydantic-ai
+langchain
+langchain-openai
+langchain-chroma

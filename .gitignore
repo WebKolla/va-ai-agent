@@ -41,4 +41,10 @@ ENV/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Data
+embeddings/
+chroma_langchain_db/
+*.db
+*.sqlite3
