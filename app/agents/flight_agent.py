@@ -36,12 +36,13 @@ async def flight_search(
 
     search_query = " ".join(search_components)
 
-    results = search_flights_with_score(search_query, k=5)
+    results = search_flights_with_score(search_query)
 
     if not results:
-        return "No flights found matching your criteria."
+        return []
 
     formatted_results = []
+
     for doc, score in results:
         metadata = doc.metadata
 
@@ -49,16 +50,15 @@ async def flight_search(
             continue
 
         formatted_results.append(
-            f"Flight: {metadata.get('airline')} {metadata.get('flight_number', '')}\n"
-            f"Route: {metadata.get('from_airport')} → {metadata.get('to_airport')}\n"
-            f"Price: ${metadata.get('price')}\n"
-            f"Duration: {metadata.get('duration')}\n"
-            f"Date: {metadata.get('date')}\n"
-            f"Similarity Score: {score:.3f}\n"
-            f"Details: {doc.page_content[:250]}...\n"
+            {
+                "airline": metadata.get("airline"),
+                "from_airport": metadata.get("from_airport"),
+                "to_airport": metadata.get("to_airport"),
+                "price": metadata.get("price"),
+                "duration": metadata.get("duration"),
+                "date": metadata.get("date"),
+                "similarity_score": score,
+            }
         )
 
-    if not formatted_results:
-        return "No flights found within your price range."
-
-    return "\n" + "=" * 50 + "\n".join(formatted_results)
+    return formatted_results

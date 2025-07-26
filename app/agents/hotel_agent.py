@@ -34,12 +34,13 @@ async def hotel_search(
     if location:
         search_query += f" in {location}"
 
-    results = search_hotels_with_score(search_query, k=5)
+    results = search_hotels_with_score(search_query)
 
     if not results:
-        return "No hotels found matching your criteria."
+        return []
 
     formatted_results = []
+
     for doc, score in results:
         metadata = doc.metadata
 
@@ -49,16 +50,13 @@ async def hotel_search(
             continue
 
         formatted_results.append(
-            f"Hotel: {metadata.get('name')}\n"
-            f"Location: {metadata.get('city')}\n"
-            f"Rating: {metadata.get('rating')} stars\n"
-            f"Price: ${metadata.get('price_per_night')}/night\n"
-            f"Pricing Tier: {metadata.get('pricing_tier')}\n"
-            f"Similarity Score: {score:.3f}\n"
-            f"Description: {doc.page_content[:300]}...\n"
+            {
+                "name": {metadata.get("name")},
+                "city": {metadata.get("city")},
+                "price_per_night": {metadata.get("price_per_night")},
+                "rating": {metadata.get("rating")},
+                "similarity_score": score,
+            }
         )
 
-    if not formatted_results:
-        return "No hotels found matching your filters."
-
-    return "\n" + "=" * 50 + "\n".join(formatted_results)
+    return formatted_results

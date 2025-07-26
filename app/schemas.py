@@ -1,3 +1,5 @@
+"""Schemas for the travel assistant."""
+
 from typing import List, Optional
 
 from pydantic import BaseModel, Field
@@ -7,7 +9,8 @@ class TravelQuery(BaseModel):
     """Request body schema for user travel query."""
 
     query: str = Field(
-        ..., example="Looking for a romantic beach getaway in Europe during July"
+        ...,
+        example="I am looking for a romantic beach getaway in USA during July from London",
     )
 
 
@@ -20,8 +23,8 @@ class HotelRecommendation(BaseModel):
 
 class FlightRecommendation(BaseModel):
     airline: str = Field(..., example="Virgin Atlantic")
-    from_airport: str = Field(..., example="London")
-    to_airport: str = Field(..., example="Paris")
+    from_airport: str = Field(..., example="London Heathrow")
+    to_airport: str = Field(..., example="Paris Charles de Gaulle")
     price: float = Field(..., example=100)
     duration: str = Field(..., example="1h 30m")
     date: str = Field(..., example="2025-08-01")
@@ -38,7 +41,10 @@ class TravelAdvice(BaseModel):
     """Structured response returned by the Gen-AI Travel Assistant."""
 
     destination: str = Field(..., example="Paris")
-    reason: str = Field(..., example="The Eiffel Tower is a beautiful landmark")
+    reason: str = Field(
+        ...,
+        example="The Eiffel Tower is a one of the most iconic landmarks in the world",
+    )
     budget: str = Field(..., example="Budget")
     tips: List[str] = Field(
         ...,

@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from pydantic_ai import Agent
 
 from app.datastore import search_experiences_with_score
-from app.schemas import ExperienceRecommendation
 from app.prompts import EXPERIENCE_AGENT_PROMPT
+from app.schemas import ExperienceRecommendation
 
 load_dotenv()
 
@@ -26,12 +26,13 @@ async def experience_search(
     if location:
         search_query += f" in {location}"
 
-    results = search_experiences_with_score(search_query, k=5)
+    results = search_experiences_with_score(search_query)
 
     if not results:
-        return "No experiences found matching your criteria."
+        return []
 
     formatted_results = []
+
     for doc, score in results:
         metadata = doc.metadata
 
@@ -39,16 +40,13 @@ async def experience_search(
             continue
 
         formatted_results.append(
-            f"Experience: {metadata.get('name')}\n"
-            f"Location: {metadata.get('city')}\n"
-            f"Price: ${metadata.get('price')}\n"
-            f"Duration: {metadata.get('duration')}\n"
-            f"Tags: {metadata.get('tags')}\n"
-            f"Similarity Score: {score:.3f}\n"
-            f"Description: {doc.page_content[:300]}...\n"
+            {
+                "name": {metadata.get("name")},
+                "city": {metadata.get("city")},
+                "price": {metadata.get("price")},
+                "duration": {metadata.get("duration")},
+                "similarity_score": {score},
+            }
         )
 
-    if not formatted_results:
-        return "No experiences found within your price range."
-
-    return "\n" + "=" * 50 + "\n".join(formatted_results)
+    return formatted_results

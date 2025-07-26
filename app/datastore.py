@@ -41,7 +41,7 @@ def get_random_room_price() -> float:
 
 
 def get_random_cabin_price() -> float:
-    """Returns a random price for cabinp ricing."""
+    """Returns a random price for cabin pricing."""
     return float(random.randint(100, 1000))
 
 
