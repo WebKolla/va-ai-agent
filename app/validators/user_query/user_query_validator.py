@@ -106,7 +106,7 @@ def validate_query_for_gambling(query: str) -> dict:
 
 def is_travel_related_query(query: str) -> dict:
     """Validate query for travel assistant."""
-    # TODO: Add more keywords or use and LLM to check if the query is travel related
+    # TODO: Add more keywords or use and LLM to check if the query is travel related. This is too simple and therefore can bring mixed results.
     travel_assistant_keywords = [
         "travel",
         "trip",
@@ -118,6 +118,17 @@ def is_travel_related_query(query: str) -> dict:
         "activity",
         "destination",
         "city",
+        "romantic",
+        "family",
+        "business",
+        "group",
+        "couple",
+        "solo",
+        "budget",
+        "gateaway",
+        "airport",
+        "airline",
+        "airport",
     ]
 
     text_lower = query.lower()
