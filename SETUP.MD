@@ -44,9 +44,11 @@ cp .env.example .env
 - Set your `OPENAI_API_KEY=your_actual_api_key_here`
 - Leave other variables as default
 
-### 4️⃣ Optional: Logfire Integration
+### 4️⃣ Optional: Logfire Integration (for oberservability)
 
 ![Logfire Setup](app/assets/logfire.gif)
+
+![Logfire App](app/assets/logfire.png)
 
 For advanced logging and monitoring:
 
@@ -89,7 +91,7 @@ make ui
 make both
 ```
 
-![UI](app/assets/streamlit.gif)
+![UI](app/assets/streamlit.png)
 
 ---
 
