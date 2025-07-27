@@ -41,11 +41,11 @@ async def experience_search(
 
         formatted_results.append(
             {
-                "name": {metadata.get("name")},
-                "city": {metadata.get("city")},
-                "price": {metadata.get("price")},
-                "duration": {metadata.get("duration")},
-                "similarity_score": {score},
+                "name": metadata.get("name"),
+                "city": metadata.get("city"),
+                "price": metadata.get("price"),
+                "duration": metadata.get("duration"),
+                "similarity_score": score,
             }
         )
 

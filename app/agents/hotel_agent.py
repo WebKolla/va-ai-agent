@@ -51,10 +51,10 @@ async def hotel_search(
 
         formatted_results.append(
             {
-                "name": {metadata.get("name")},
-                "city": {metadata.get("city")},
-                "price_per_night": {metadata.get("price_per_night")},
-                "rating": {metadata.get("rating")},
+                "name": metadata.get("name"),
+                "city": metadata.get("city"),
+                "price_per_night": metadata.get("price_per_night"),
+                "rating": metadata.get("rating"),
                 "similarity_score": score,
             }
         )

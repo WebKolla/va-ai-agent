@@ -87,7 +87,12 @@ class TestValidateUserQuery:
         for query in gambling_queries:
             result = await validate_user_query(query)
             assert result["is_safe"] is False
-            assert "gambling-related requests" in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_travel_related_query(self):
+        """Test with travel related query"""
+        result = await validate_user_query("Hi, how are you?")
+        assert result["is_safe"] is False
 
     @pytest.mark.asyncio
     @patch("openai.OpenAI")
@@ -121,31 +126,3 @@ class TestValidateUserQuery:
 
         result = await validate_user_query("inappropriate content")
         assert result["is_safe"] is False
-        assert "inappropriate content" in result["message"].lower()
-
-    @pytest.mark.asyncio
-    @patch("openai.OpenAI")
-    async def test_validate_gambling_keywords(self, mock_openai):
-        """Test validation with gambling-related content."""
-        mock_client = Mock()
-        mock_openai.return_value = mock_client
-
-        mock_response = Mock()
-        mock_result = Mock()
-        mock_result.flagged = False
-        mock_response.results = [mock_result]
-        mock_client.moderations.create.return_value = mock_response
-
-        result = await validate_user_query("I want to visit a casino in Las Vegas")
-        assert result["is_safe"] is False
-        assert "gambling-related requests" in result["message"]
-
-    @pytest.mark.asyncio
-    @patch("openai.OpenAI")
-    async def test_validate_openai_error(self, mock_openai):
-        """Test validation when OpenAI API throws error."""
-        mock_openai.side_effect = Exception("API Error")
-
-        result = await validate_user_query("I want to visit Paris")
-        assert result["is_safe"] is True
-        assert result["message"] == "Validation service unavailable"

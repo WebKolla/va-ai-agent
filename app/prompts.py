@@ -123,13 +123,17 @@ PROCESS:
 DESTINATION LOGIC:
 - If agents found hotels/experiences: use their city as destination
 - If agents found flights: use flight destination
+- For budget, use the average of the prices from the agent results
+    - If the average is less than $500, use "Budget"
+    - If the average is between $500 and $1000, use "Midrange"
+    - If the average is more than $1000, use "Expensive"
 - If all agents return null
 
 OUTPUT FORMAT (using ONLY agent-provided data):
 {
     "destination": "city from agent results or 'Limited data available'",
     "reason": "explanation based ONLY on what agents actually found. Make it enjoyable and not too long",
-    "budget": "estimate based ONLY on actual prices from agent results",
+    "budget": "estimate based ONLY on actual prices from agent results. Based on individual prices, Use "Moderate", "Midrange", "Expensive" as explained in DESTINATION LOGIC section",
     "tips": ["suggestions based ONLY on agent-provided data if available and should ALWAYS get the priority. Else, provide 3 generic suggestions based on the destination"],
     "hotel": exact_hotel_object_from_agent_or_null,
     "flight": exact_flight_object_from_agent_or_null,

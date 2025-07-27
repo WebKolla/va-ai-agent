@@ -13,7 +13,7 @@ async def search_hotel_in_data(hotel_name: str, city: str) -> bool:
     results = search_hotels_with_score(search_query, k=5)
 
     if not results:
-        return f"No hotels found for '{hotel_name}' in {city}"
+        return False
 
     matches = []
     for doc, score in results:
@@ -25,10 +25,7 @@ async def search_hotel_in_data(hotel_name: str, city: str) -> bool:
             {"name": stored_name, "city": stored_city, "similarity": f"{score:.3f}"}
         )
 
-    if len(matches) > 0:
-        return True
-    else:
-        return False
+    return len(matches) > 0
 
 
 async def search_flight_in_data(
@@ -39,7 +36,7 @@ async def search_flight_in_data(
     results = search_flights_with_score(search_query, k=5)
 
     if not results:
-        return f"No flights found for {airline} from {from_airport} to {to_airport} on {date}"
+        return False
 
     matches = []
     for doc, score in results:
@@ -58,10 +55,7 @@ async def search_flight_in_data(
             }
         )
 
-    if len(matches) > 0:
-        return True
-    else:
-        return False
+    return len(matches) > 0
 
 
 async def search_experience_in_data(experience_name: str, city: str) -> bool:
@@ -70,7 +64,7 @@ async def search_experience_in_data(experience_name: str, city: str) -> bool:
     results = search_experiences_with_score(search_query, k=5)
 
     if not results:
-        return f"No experiences found for '{experience_name}' in {city}"
+        return False
 
     matches = []
     for doc, score in results:
@@ -82,28 +76,29 @@ async def search_experience_in_data(experience_name: str, city: str) -> bool:
             {"name": stored_name, "city": stored_city, "similarity": f"{score:.3f}"}
         )
 
-    if len(matches) > 0:
-        return True
-    else:
-        return False
+    return len(matches) > 0
 
 
-def get_all_recommendations(recommendations: TravelAdvice) -> bool:
+async def get_all_recommendations(recommendations: TravelAdvice) -> bool:
     """Get all recommendations from the manager agent."""
-    has_hotel = search_hotel_in_data(
+
+    if (
+        not recommendations.hotel
+        or not recommendations.flight
+        or not recommendations.experience
+    ):
+        return False
+    has_hotel = await search_hotel_in_data(
         recommendations.hotel.name, recommendations.hotel.city
     )
-    has_flight = search_flight_in_data(
+    has_flight = await search_flight_in_data(
         recommendations.flight.airline,
         recommendations.flight.from_airport,
         recommendations.flight.to_airport,
         recommendations.flight.date,
     )
-    has_experience = search_experience_in_data(
+    has_experience = await search_experience_in_data(
         recommendations.experience.name, recommendations.experience.city
     )
 
-    if has_hotel and has_flight and has_experience:
-        return True
-    else:
-        return False
+    return has_hotel and has_flight and has_experience

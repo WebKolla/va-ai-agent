@@ -5,7 +5,7 @@ st.set_page_config(page_title="AI Travel Assistant", page_icon="🌍", layout="c
 st.title("AI Travel Assistant")
 st.write("Have a conversation about your travel plans!")
 st.write("For example, try asking:")
-st.write("• Family vacation in Orlando in September with my family from London")
+st.write("• Family vacation in Orlando in July from London")
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {

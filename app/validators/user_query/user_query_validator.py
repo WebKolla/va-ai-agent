@@ -8,35 +8,41 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-async def validate_user_query(text: str) -> dict:
+async def validate_user_query(query: str) -> dict:
     """
     Validate user input for inappropriate content and length requirements.
     """
-    if not text or not text.strip():
+    if not query or not query.strip():
         return {
             "is_safe": False,
             "message": "Please provide a travel query. Tell me where you'd like to go or what you're looking for!",
         }
 
-    if len(text.strip()) < 3:
+    if len(query.strip()) < 3:
         return {
             "is_safe": False,
             "message": "Your query is too short. Please provide more details about your travel plans.",
         }
 
-    if len(text.strip()) > 1000:
+    if len(query.strip()) > 1000:
         return {
             "is_safe": False,
             "message": "Your query is too long. Please provide a shorter query.",
         }
 
-    if validate_query_for_injection(text)["is_safe"] is False:
+    if validate_query_for_injection(query)["is_safe"] is False:
         return {
             "is_safe": False,
             "message": "Your query contains inappropriate content. Please rephrase your travel request.",
         }
 
-    if validate_query_for_gambling(text)["is_safe"] is False:
+    if is_travel_related_query(query)["is_safe"] is False:
+        return {
+            "is_safe": False,
+            "message": "Your query is not travel related. Please ask about travel destinations, hotels, flights, or activities instead.",
+        }
+
+    if validate_query_for_gambling(query)["is_safe"] is False:
         return {
             "is_safe": False,
             "message": "I'm a travel assistant and cannot help with gambling-related requests. Please ask about travel destinations, hotels, flights, or activities instead.",
@@ -45,7 +51,7 @@ async def validate_user_query(text: str) -> dict:
     try:
         client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-        response = client.moderations.create(input=text)
+        response = client.moderations.create(input=query)
         result = response.results[0]
 
         if result.flagged:
@@ -96,3 +102,30 @@ def validate_query_for_gambling(query: str) -> dict:
         }
 
     return {"is_safe": True}
+
+
+def is_travel_related_query(query: str) -> dict:
+    """Validate query for travel assistant."""
+    # TODO: Add more keywords or use and LLM to check if the query is travel related
+    travel_assistant_keywords = [
+        "travel",
+        "trip",
+        "vacation",
+        "holiday",
+        "hotel",
+        "flight",
+        "experience",
+        "activity",
+        "destination",
+        "city",
+    ]
+
+    text_lower = query.lower()
+    travel_assistant_detected = any(
+        keyword in text_lower for keyword in travel_assistant_keywords
+    )
+
+    if travel_assistant_detected:
+        return {"is_safe": True}
+
+    return {"is_safe": False}

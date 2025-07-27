@@ -109,10 +109,10 @@ class TestHotelAgent:
         result = await hotel_search("luxury hotel", location="London")
 
         assert len(result) == 1
-        assert result[0]["name"] == {"Test Hotel"}
-        assert result[0]["city"] == {"London"}
-        assert result[0]["price_per_night"] == {200.0}
-        assert result[0]["rating"] == {4.5}
+        assert result[0]["name"] == "Test Hotel"
+        assert result[0]["city"] == "London"
+        assert result[0]["price_per_night"] == 200.0
+        assert result[0]["rating"] == 4.5
         assert result[0]["similarity_score"] == 0.9
 
     @pytest.mark.asyncio
@@ -225,10 +225,10 @@ class TestExperienceAgent:
         result = await experience_search("sightseeing", location="London")
 
         assert len(result) == 1
-        assert result[0]["name"] == {"London Eye"}
-        assert result[0]["city"] == {"London"}
-        assert result[0]["price"] == {50.0}
-        assert result[0]["duration"] == {"2 hours"}
+        assert result[0]["name"] == "London Eye"
+        assert result[0]["city"] == "London"
+        assert result[0]["price"] == 50.0
+        assert result[0]["duration"] == "2 hours"
 
     @pytest.mark.asyncio
     async def test_experience_agent_with_test_model(self):

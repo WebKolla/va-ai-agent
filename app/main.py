@@ -62,7 +62,7 @@ async def travel_assistant(
         result = await manager_agent.run(query.query, deps=agent_deps)
 
         # Validate the recommendations
-        has_all_recommendations = get_all_recommendations(result.output)
+        has_all_recommendations = await get_all_recommendations(result.output)
         if not has_all_recommendations:
             logger.error("Recommendations are not valid")
             raise HTTPException(status_code=400, detail="Recommendations are not valid")
