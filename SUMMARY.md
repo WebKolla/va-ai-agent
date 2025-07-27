@@ -161,6 +161,9 @@ As an additional feature a chat UI is created with streamlit.
 - **CI/CD Pipeline**: Automated testing and deployment
 - **Integration Testing**: [TestContainers](https://testcontainers.com/) for OpenAI mocking
 
+### Extending Agents with MCP
+- Each agent capabilities can be exposed through an MCP server independantly to other potential consumers. This has the potential to transform the static recommendation system into a dynamic bookable travel platform. 
+
 ### User Experience
 - Feedback collection system
 - Personalisation based on preferences
