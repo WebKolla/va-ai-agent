@@ -38,5 +38,6 @@ pytest-mock = "^3.14.1"
 httpx = "^0.28.1"
 pytest-cov = "^6.2.1"
 pylint = "^3.3.7"
+make = "^0.1.6.post2"
 
 

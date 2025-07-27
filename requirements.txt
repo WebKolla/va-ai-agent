@@ -9,6 +9,7 @@ langchain-openai
 langchain-core
 langchain-chroma
 streamlit
+make
 # Unit testing dependencies
 pytest
 pytest-asyncio

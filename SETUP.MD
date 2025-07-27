@@ -74,7 +74,7 @@ Create vector collections from seed data:
 make ingest
 ```
 
-> ⏳ **Note:** This process may take a few minutes. You'll see`---Starting data ingestion---` at the beginning and  `---Data ingestion completed!---` when finished.
+> ⏳ **Note:** This process may take a few minutes. You'll see`---Starting data ingestion---` at the beginning and  `---Data ingestion completed!---` when finished. You will also notice a folder created with `embeddings`
 
 ### 6️⃣ Launch Application
 
