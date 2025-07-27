@@ -1,13 +1,13 @@
 # AI Travel Assistant - Technical Summary
 
-Multi Agent RAG system for travel recommendations using Virgin Atlantic seed data
+Multi Agent [RAG](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/) system for travel recommendations using Virgin Atlantic seed data
 
 ---
 
 ## 🏗️ Architecture Overview
 
 ### System Design
-![Architecture](app/assets/architecture.png)
+![Architecture](app/assets/architechture.png)
 
 **Core Components:**
 - **Manager Agent**: Orchestrates specialist agents and coordinates responses
@@ -44,7 +44,7 @@ Multi Agent RAG system for travel recommendations using Virgin Atlantic seed dat
 
 ## 🏛️ Architectural Decisions
 
-### Multi-Agent Design
+### Multi Agent Design
 **Why:** Domain specialisation, clear separation of concerns, reusable components
 - **Hotel Agent**: Accommodation recommendations with filtering
 - **Flight Agent**: Route optimisation and availability
@@ -70,7 +70,7 @@ Multi Agent RAG system for travel recommendations using Virgin Atlantic seed dat
 - ✅ **Injection Protection**: SQL injection, XSS, script detection
 - ✅ **Content Moderation**: OpenAI moderation API integration
 - ✅ **Travel Relevance**: Domain specific query filtering
-- ✅ **Gambling Prevention**: Blocked gambling-related queries
+- ✅ **Gambling Prevention**: Blocked gambling related queries
 
 ### Output Validation
 - ✅ **Hallucination Prevention**: Responses validated against seed data
@@ -87,7 +87,7 @@ Multi Agent RAG system for travel recommendations using Virgin Atlantic seed dat
 
 ### Testing Strategy
 - **Unit Tests**: Individual component validation
-- **Integration Tests**: End-to-end API testing
+- **Integration Tests**: End-to-end API testing 
 - **Agent Tests**: Multi agent workflow validation
 - **Validator Tests**: Security and input validation
 
@@ -117,7 +117,7 @@ Multi Agent RAG system for travel recommendations using Virgin Atlantic seed dat
 
 ### Streamlit Chatbot
 
-As an additional feature a chatui is created with streamlit. 
+As an additional feature a chat UI is created with streamlit. 
 
 **Access**: `http://localhost:8501`
 
@@ -132,36 +132,37 @@ As an additional feature a chatui is created with streamlit.
 ## 🚀 Future Enhancements
 
 ### Security Improvements
-- [ ] OAuth 2.0 / JWT authentication
-- [ ] API key vault integration (AWS Secrets Manager, HashiCorp Vault)
-- [ ] PII detection and masking
-- [ ] Rate limiting and abuse prevention
+- OAuth 2.0 / JWT authentication
+- API key vault integration (AWS Secrets Manager, HashiCorp Vault)
+- PII detection and masking
+- Rate limiting and abuse prevention
 
 ### Performance Optimisations
-- [ ] Response caching layer
-- [ ] Async vector search
-- [ ] Load balancing for high availability
+- Response caching layer
+- Async vector search
+- Load balancing for high availability
+- Enchance agent prompts overtime with better optimisation
 
 ### Enhanced Validation
-- [ ] AI-powered response validation agent
-- [ ] Real time data freshness checks
-- [ ] Multi-model consensus validation
-- [ ] User feedback integration for measuring effectiveness of response overtime
+- AI powered response validation agent
+- Real time data freshness checks
+- Multi model consensus validation
+- User feedback integration for measuring effectiveness of responses overtime with better statistical evidence
 
 ### Observability & Analytics
-- [ ] Cost optimization dashboards
-- [ ] Performance bottleneck analysis
-- [ ] User satisfaction metrics
-- [ ] A/B testing framework
+- Cost optimisation dashboards
+- Performance bottleneck analysis
+- User satisfaction metrics
+- A/B testing framework
 
 ### Infrastructure
-- [ ] **Containerisation**: Docker deployment ready
-- [ ] **Microservices**: Separate services for ingestion, agents, and validation
-- [ ] **CI/CD Pipeline**: Automated testing and deployment
-- [ ] **Integration Testing**: TestContainers for OpenAI mocking
+- **Containerisation**: Docker deployment ready
+- **Microservices**: Separate services for ingestion, agents, and validation
+- **CI/CD Pipeline**: Automated testing and deployment
+- **Integration Testing**: [TestContainers](https://testcontainers.com/) for OpenAI mocking
 
 ### User Experience
-- [ ] Feedback collection system
-- [ ] Personalisation based on preferences
-- [ ] Multi language support
-- [ ] Voice and Video interface integration
+- Feedback collection system
+- Personalisation based on preferences
+- Multi language support
+- Voice and Video interface integration
