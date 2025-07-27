@@ -128,7 +128,6 @@ def is_travel_related_query(query: str) -> dict:
         "gateaway",
         "airport",
         "airline",
-        "airport",
     ]
 
     text_lower = query.lower()
