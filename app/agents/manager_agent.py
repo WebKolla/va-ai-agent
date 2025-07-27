@@ -6,6 +6,7 @@ import os
 
 from dotenv import load_dotenv
 from pydantic_ai import Agent, RunContext
+from pydantic_ai.settings import ModelSettings
 
 from app.prompts import MANAGER_AGENT_PROMPT
 from app.schemas import (
@@ -15,8 +16,6 @@ from app.schemas import (
     TravelAdvice,
 )
 
-# from pydantic_ai.settings import ModelSettings
-
 
 load_dotenv()
 
@@ -24,7 +23,7 @@ manager_agent = Agent(
     os.getenv("GPT_MODEL"),
     deps_type=dict,
     output_type=TravelAdvice,
-    # model_settings=ModelSettings(temperature=0.5, max_tokens=500),
+    model_settings=ModelSettings(temperature=0.5, max_tokens=500),
     instructions=(MANAGER_AGENT_PROMPT),
 )
 

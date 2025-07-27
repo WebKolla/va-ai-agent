@@ -19,19 +19,19 @@ DB_PATH = os.getenv("DB_PATH")
 hotels_store = Chroma(
     collection_name="va_hotels_collection",
     embedding_function=embeddings,
-    persist_directory=DB_PATH,
+    persist_directory=f"{DB_PATH}/hotels",
 )
 
 experiences_store = Chroma(
     collection_name="va_experiences_collection",
     embedding_function=embeddings,
-    persist_directory=DB_PATH,
+    persist_directory=f"{DB_PATH}/experiences",
 )
 
 flights_store = Chroma(
     collection_name="va_flights_collection",
     embedding_function=embeddings,
-    persist_directory=DB_PATH,
+    persist_directory=f"{DB_PATH}/flights",
 )
 
 

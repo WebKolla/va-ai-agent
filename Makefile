@@ -1,8 +1,7 @@
-.PHONY: dev ui both install clean test ingest
 
 ingest:
 	@echo "Ingesting data into vector stores..."
-	poetry run python -m app.ingest_data
+	poetry run python -m app.services.ingest_data
 
 dev:
 	@echo "Starting FastAPI development server..."

@@ -6,7 +6,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app.utils import check_api_key, validate_user_query
+from app.validators.api.api_key_validator import check_api_key
+from app.validators.user_query.user_query_validator import validate_user_query
 
 
 class TestCheckApiKey:
@@ -46,6 +47,47 @@ class TestValidateUserQuery:
         result = await validate_user_query("hi")
         assert result["is_safe"] is False
         assert "too short" in result["message"].lower()
+
+    @pytest.mark.asyncio
+    async def test_suspicious_xss_pattern(self):
+        """Test with XSS pattern"""
+        result = await validate_user_query("Find hotels <script>alert('xss')</script> ")
+
+        assert result["is_safe"] is False
+        assert "inappropriate content" in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_suspicious_sql_injection_pattern(self):
+        """Test with SQL injection pattern"""
+        result = await validate_user_query("Find hotels union select * from users")
+
+        assert result["is_safe"] is False
+        assert "inappropriate content" in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_suspicious_javascript_pattern(self):
+        """Test with JavaScript pattern"""
+        result = await validate_user_query(
+            "Find hotels javascript:alert('hello world')"
+        )
+
+        assert result["is_safe"] is False
+        assert "inappropriate content" in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_gambling_keywords(self):
+        """Test with gambling keywords"""
+        gambling_queries = [
+            "Find casinos in Las Vegas",
+            "Where can I go gambling?",
+            "Show me poker rooms",
+            "I want to play blackjack",
+        ]
+
+        for query in gambling_queries:
+            result = await validate_user_query(query)
+            assert result["is_safe"] is False
+            assert "gambling-related requests" in result["message"]
 
     @pytest.mark.asyncio
     @patch("openai.OpenAI")

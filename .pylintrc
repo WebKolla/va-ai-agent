@@ -7,7 +7,5 @@ source-roots=.
 disable=import-error,
         missing-module-docstring,
         missing-class-docstring,
-        missing-function-docstring
-
-[FORMAT]
-max-line-length=150
+        missing-function-docstring,
+        line-too-long

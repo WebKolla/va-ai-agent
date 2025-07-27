@@ -4,6 +4,8 @@ import streamlit as st
 st.set_page_config(page_title="AI Travel Assistant", page_icon="🌍", layout="centered")
 st.title("AI Travel Assistant")
 st.write("Have a conversation about your travel plans!")
+st.write("For example, try asking:")
+st.write("• Family vacation in Orlando in September with my family from London")
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
@@ -26,49 +28,50 @@ if prompt := st.chat_input("Ask about travel destinations..."):
         with st.spinner("Planning your perfect trip..."):
             try:
                 response = requests.post(
-                    "http://localhost:8000/travel-assistant", json={"query": prompt}
+                    "http://localhost:8000/travel-assistant",
+                    json={"query": prompt},
+                    timeout=120,
                 )
 
                 if response.status_code == 200:
                     advice = response.json()
                     formatted_response = f"""
-Recommended Destination:
-    {advice['destination']}
-Why this destination?
-    {advice['reason']}
-
-Budget Estimate:
-    {advice['budget']}"""
-
+Based on your request, here is my recommendation. \n                    
+🌍 Recommended Destination:
+{advice['destination']}\n
+💡 Why am I recommending this destination:
+{advice['reason']}\n
+💰 Budget Estimate:
+{advice['budget']}"""
                     if advice.get("hotel"):
                         hotel = advice["hotel"]
                         formatted_response += f"""
-Hotel Recommendation:
-    • {hotel['name']} in {hotel['city']}
-    • Rating: {hotel['rating']} ⭐
-    • Price: ${hotel['price_per_night']}/night"""
+\n🏨 Hotel Recommendation:
+• {hotel['name']} in {hotel['city']}
+• Rating: {hotel['rating']} ⭐
+• Price: ${hotel['price_per_night']}/night"""
 
                     if advice.get("flight"):
                         flight = advice["flight"]
                         formatted_response += f"""
-Flight Recommendation:
-    • {flight['airline']} - {flight['from_airport']} → {flight['to_airport']}
-    • Duration: {flight['duration']}
-    • Price: ${flight['price']}
-    • Date: {flight['date']}"""
+\n🛫 Flight Recommendation:
+• {flight['airline']} - {flight['from_airport']} → {flight['to_airport']}
+• Duration: {flight['duration']}
+• Price: ${flight['price']}
+• Date: {flight['date']}"""
 
                     if advice.get("experience"):
                         experience = advice["experience"]
                         formatted_response += f"""
-Experience Recommendation:
-    • {experience['name']} in {experience['city']}
-    • Duration: {experience['duration']}
-    • Price: ${experience['price']}"""
+\n🎉 Experience Recommendation:
+• {experience['name']} in {experience['city']}
+• Duration: {experience['duration']}
+• Price: ${experience['price']}"""
 
                     if advice.get("tips"):
                         formatted_response += f"""
-Travel Tips:
-    {chr(10).join(f'• {tip}' for tip in advice['tips'])}"""
+\n💡 Travel Tips:
+{chr(10).join(f'• {tip}' for tip in advice['tips'])}"""
 
                     st.text(formatted_response)
 
@@ -89,13 +92,3 @@ Travel Tips:
                 st.session_state.messages.append(
                     {"role": "assistant", "content": error_msg}
                 )
-
-                with st.sidebar:
-                    st.header("Example Questions")
-                    st.write("Try asking:")
-                    st.write(
-                        "• Business trip to Jamaica with good hotels in September. Traveling with my family from London"
-                    )
-                    st.write(
-                        "• Family vacation in Orlando in September. Traveling with my family from London"
-                    )

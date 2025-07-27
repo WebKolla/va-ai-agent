@@ -1,0 +1,1 @@
+"""User query validator package."""

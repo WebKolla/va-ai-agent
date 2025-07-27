@@ -26,6 +26,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+.pytest_cache/
 MANIFEST
 
 # Virtual environment
@@ -48,3 +49,6 @@ embeddings/
 chroma_langchain_db/
 *.db
 *.sqlite3
+
+# Logfire
+.logfire/

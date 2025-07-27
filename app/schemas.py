@@ -23,8 +23,8 @@ class HotelRecommendation(BaseModel):
 
 class FlightRecommendation(BaseModel):
     airline: str = Field(..., example="Virgin Atlantic")
-    from_airport: str = Field(..., example="London Heathrow")
-    to_airport: str = Field(..., example="Paris Charles de Gaulle")
+    from_airport: str = Field(..., example="LHR")
+    to_airport: str = Field(..., example="MIA")
     price: float = Field(..., example=100)
     duration: str = Field(..., example="1h 30m")
     date: str = Field(..., example="2025-08-01")
