@@ -105,7 +105,7 @@ make both
 
 ---
 
-Running unit test suite:
+## 📝 Running unit test suite:
 ```bash
 make test
 ```
@@ -134,5 +134,5 @@ Your AI Travel Assistant is ready to help plan amazing trips!
 ---
 
 <div align="center">
-  <sub>Built with ❤️ using FastAPI, OpenAI, and Streamlit</sub>
+  <sub>Built with ❤️ using FastAPI, PydanticAI, Langchain, OpenAI, and Streamlit</sub>
 </div>
