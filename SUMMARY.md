@@ -162,7 +162,10 @@ As an additional feature a chat UI is created with streamlit.
 - **Integration Testing**: [TestContainers](https://testcontainers.com/) for OpenAI mocking
 
 ### Extending Agents with MCP
-- Each agent capabilities can be exposed through an MCP server independantly to other potential consumers. This has the potential to transform the static recommendation system into a dynamic bookable travel platform. 
+- Each agent capabilities can be exposed through an MCP server independantly to other potential consumers. This has the potential to transform the static recommendation system into a dynamic bookable travel platform.
+
+### GraphRAG
+- Employ GraphRAG approach opposed to vector data utilising a Knowledge Graph technology such as Databricks or neo4j for faster and more realiable data. 
 
 ### User Experience
 - Feedback collection system
